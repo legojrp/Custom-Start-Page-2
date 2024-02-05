@@ -27,6 +27,7 @@ function App() {
         <Row className="mt-4">
         <Col>
           <div className="text-center">
+            <Link href="https://www.google.com/" text="Google"></Link> {/* test to open link in new tab */}
             <h2>Above Content</h2>
             <p>Content above the centered component.</p>
           </div>
