@@ -1,2 +1,3 @@
 <?php 
-echo "Hello, World!";
+$file = file_get_contents("test.json");
+echo $file;

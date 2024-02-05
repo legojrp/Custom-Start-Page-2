@@ -1,0 +1,21 @@
+{
+    "userData": {
+        "links": [
+            {
+                "url": "https://www.google.com",
+                "name": "Google"
+            },
+            {
+                "url": "https://www.facebook.com",
+                "name": "Facebook"
+            }
+        ]
+    },
+    "Settings": {
+        "greeting": "Hello World",
+        "image":"https://example.com",
+        "theme": "dark",
+        "color":"blue",
+        "id" : "1"
+    }
+}

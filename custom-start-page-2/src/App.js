@@ -4,15 +4,48 @@ import Row from "react-bootstrap/esm/Row.js";
 import Col from "react-bootstrap/esm/Col.js";
 import Center from "./Center.js";
 import Link from "./Link.js";
+
+import {useState, useEffect} from 'react';
+
 function App() {
+
+  const [data, setData] = useState([null]);
+  const [linkPile, setLinkPile] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/backend/requests.php", {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            // Add any other required headers
+          },
+          credentials: 'include', // Use 'include' if you need to send cookies
+        });
+        const result = await response.json();
+        setData(result);
+        console.log(result);
+       
+        for (let i = 0; i < data.userData.links.length; i++) {
+          linkPile.push(<Link name={data.userData.links[i].name} url={data.userData.links[i].url}></Link>);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+
+    };
+  
+    fetchData();
+  }, []);
+  
+
   return (
     <div className="App">
       <CustomNav></CustomNav>
       <Container fluid className="d-flex flex-column justify-content-between" style={{ minHeight: '80vh' }}>
         <Row className="mt-4">
           <Col>
-            
-            
+            {/* {linkPile} */}
           </Col>
         </Row>
         <Row className="justify-content-center align-items-center" style={{ minHeight: '10vh' }}>
