@@ -9,26 +9,21 @@ import {useState, useEffect} from 'react';
 
 function App() {
 
-  const [data, setData] = useState([null]);
+  const [data, setData] = useState([]);
   const [linkPile, setLinkPile] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:3000/backend/requests.php", {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            // Add any other required headers
-          },
-          credentials: 'include', // Use 'include' if you need to send cookies
+        const response = await fetch("http://localhost:3002/backend/requests.php", {
+          method: 'GET'
         });
         const result = await response.json();
         setData(result);
-        console.log(result);
-       
-        for (let i = 0; i < data.userData.links.length; i++) {
-          linkPile.push(<Link name={data.userData.links[i].name} url={data.userData.links[i].url}></Link>);
-        }
+          let links = [];
+          for (let i = 0; i < result.userData.links.length; i++) {
+            links.push(<Link name={result.userData.links[i].name} url={result.userData.links[i].url} key={links.length}></Link>);
+            setLinkPile(links);
+          }
       } catch (error) {
         console.log(error);
       }
@@ -45,7 +40,7 @@ function App() {
       <Container fluid className="d-flex flex-column justify-content-between" style={{ minHeight: '80vh' }}>
         <Row className="mt-4">
           <Col>
-            {/* {linkPile} */}
+            {linkPile}
           </Col>
         </Row>
         <Row className="justify-content-center align-items-center" style={{ minHeight: '10vh' }}>

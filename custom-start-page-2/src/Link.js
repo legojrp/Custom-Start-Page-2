@@ -2,7 +2,7 @@ function Link(props) {
     return (
         <div>
             <label>
-                <a href={props.href} target="_blank">{props.text}</a> {/* opens the link in new tab */}
+                <a href={props.url} target="_blank">{props.name}</a> {/* opens the link in new tab */}
             </label>
         </div>    
     );
