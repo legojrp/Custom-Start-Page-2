@@ -15,7 +15,7 @@ function Center (){
     return (
         <div className="text-center">
             <form onSubmit={handleSearch}> {/* when submitted, handleSearch decides how to open the link*/}
-                <input type="text" placeholder="Search" id="q" name="q" autoFocus />
+                <input type="text" placeholder="Search" id="q" name="q" autoFocus autoComplete="off" />
             </form>
         </div>
     );
