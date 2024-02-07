@@ -9,11 +9,11 @@ import {useState, useEffect} from 'react';
 
 function App() {
 
-  const [data, setData] = useState([]);
-  const [linkPile, setLinkPile] = useState([]);
+  const [data, setData] = useState([]); // data
+  const [linkPile, setLinkPile] = useState([]); // link pile array
   useEffect(() => {
     const fetchData = async () => {
-      try {
+      try { // try to fetch
         const response = await fetch("http://localhost:3002/backend/requests.php", {
           method: 'GET'
         });
@@ -24,7 +24,7 @@ function App() {
             links.push(<Link name={result.userData.links[i].name} url={result.userData.links[i].url} key={links.length}></Link>);
             setLinkPile(links);
           }
-      } catch (error) {
+      } catch (error) { // errors to the console
         console.log(error);
       }
 

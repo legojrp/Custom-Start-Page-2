@@ -1,9 +1,13 @@
+import Card from 'react-bootstrap/Card';
 function Link(props) {
     return (
         <div>
-            <label>
-                <a href={props.url} target="_blank">{props.name}</a> {/* opens the link in new tab */}
-            </label>
+                <Card style={{ width: '18rem' }}>
+                    <Card.Title>{props.name}</Card.Title>
+                    <Card.Text> 
+                        <a href={props.url} target="_blank">{props.name}</a> {/* opens the link in new tab */}
+                    </Card.Text>
+                </Card>
         </div>    
     );
 
