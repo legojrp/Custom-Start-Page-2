@@ -1,25 +1,27 @@
 import Card from 'react-bootstrap/Card';
-function Link(props) {
+import Container from 'react-bootstrap/esm/Container';
+
+export default function Link(props) {
     return (
         <div>
-                <Card style={{ width: '18rem' }}>
-                    <Card.Title>{props.name}</Card.Title>
-                    <Card.Text> 
+                <Container style={{ width: '18rem' }} onClick={() => window.open(props.url, '_blank')}>
+                    <img href={props.url + "/favicon.ico"} alt={props.name}></img>
+                    <p> 
                         <a href={props.url} target="_blank">{props.name}</a> {/* opens the link in new tab */}
-                    </Card.Text>
-                </Card>
+                    </p>
+                </Container>
         </div>    
     );
 
 }
-export default Link;
 
-function LinkPile(){
+export function LinkPile(props){
 
     return (
-        <div>
-            <p>LinkPile</p>
-        </div>
+        <Container class="d-flex justify-content-center">
+            {props.links}
+        </Container>
     );
 
 }
+

@@ -3,7 +3,7 @@ import CustomNav from "./Navbar.js";
 import Row from "react-bootstrap/esm/Row.js";
 import Col from "react-bootstrap/esm/Col.js";
 import Center from "./Center.js";
-import Link from "./Link.js";
+import Link, { LinkPile } from "./Link.js";
 
 import {useState, useEffect} from 'react';
 
@@ -14,14 +14,14 @@ function App() {
   useEffect(() => {
     const fetchData = async () => {
       try { // try to fetch
-        const response = await fetch("http://localhost:3002/backend/requests.php", {
+        const response = await fetch("http://localhost:3002/backend/requests.php", { // actually fetching
           method: 'GET'
         });
-        const result = await response.json();
+        const result = await response.json(); // json text
         setData(result);
-          let links = [];
+          let links = []; // array to be links
           for (let i = 0; i < result.userData.links.length; i++) {
-            links.push(<Link name={result.userData.links[i].name} url={result.userData.links[i].url} key={links.length}></Link>);
+            links.push(<Link name={result.userData.links[i].name} url={result.userData.links[i].url} key={links.length}></Link>); // push links from link.js
             setLinkPile(links);
           }
       } catch (error) { // errors to the console
@@ -40,7 +40,7 @@ function App() {
       <Container fluid className="d-flex flex-column justify-content-between" style={{ minHeight: '80vh' }}>
         <Row className="mt-4">
           <Col>
-            {linkPile}
+            <LinkPile links={linkPile}></LinkPile>
           </Col>
         </Row>
         <Row className="justify-content-center align-items-center" style={{ minHeight: '10vh' }}>
