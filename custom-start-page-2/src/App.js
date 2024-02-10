@@ -4,17 +4,20 @@ import Row from "react-bootstrap/esm/Row.js";
 import Col from "react-bootstrap/esm/Col.js";
 import Center from "./Center.js";
 import Link, { LinkPile } from "./Link.js";
+import Settings from "./Settings.js";
+
 
 import {useState, useEffect} from 'react';
 
 function App() {
 
   const [data, setData] = useState([]); // data
-  const [linkPile, setLinkPile] = useState([]); // link pile array
+  const [linkPile, setLinkPile] = useState(null); // link pile array
+  const [overFlow, setOverFlow] = useState(null);
   useEffect(() => {
     const fetchData = async () => {
       try { // try to fetch
-        const response = await fetch("http://localhost:3002/backend/requests.php", { // actually fetching
+        const response = await fetch("http://192.168.0.244:3002/backend/requests.php", { // actually fetching
           method: 'GET'
         });
         const result = await response.json(); // json text
@@ -22,8 +25,9 @@ function App() {
           let links = []; // array to be links
           for (let i = 0; i < result.userData.links.length; i++) {
             links.push(<Link name={result.userData.links[i].name} url={result.userData.links[i].url} key={links.length}></Link>); // push links from link.js
-            setLinkPile(links);
           }
+          setLinkPile(links);
+
       } catch (error) { // errors to the console
         console.log(error);
       }
@@ -33,15 +37,46 @@ function App() {
     fetchData();
   }, []);
   
+  const overFlowHandle = (overFlowLinks) => {
+    setOverFlow(overFlowLinks);
+  } 
+
+  useEffect(() => {
+  }, [linkPile]);
+  
+  useEffect(() => {
+    
+  }, [overFlow]);
+
+
+const handle = (action) => {
+  if (action === "handleSettingShow") {
+      setSettingsShow(true);
+
+  }
+  else if (action === "handleSettingHide") {
+      setSettingsShow(false);
+  }
+
+
+}
+
+const [settingsShow, setSettingsShow] = useState(false);
+
+
 
   return (
     <div className="App">
-      <CustomNav></CustomNav>
+      <CustomNav handle={handle}></CustomNav>
       <Container fluid className="d-flex flex-column justify-content-between" style={{ minHeight: '80vh' }}>
         <Row className="mt-4">
           <Col>
-            <LinkPile links={linkPile}></LinkPile>
-          </Col>
+          {linkPile !== null ? ( // Render LinkPile only when linkPile is not null
+              <LinkPile links={linkPile} overFlowHandle={overFlowHandle} overFlow={true}></LinkPile>
+            ) : (
+              <div>Loading links...</div>
+            )}
+            </Col>
         </Row>
         <Row className="justify-content-center align-items-center" style={{ minHeight: '10vh' }}>
           <Col xs={12} md={6}>
@@ -54,16 +89,20 @@ function App() {
         </Row>
         <Row className="mt-4">
         <Col>
-          <div className="text-center">
-            <Link href="https://www.google.com/" text="Google"></Link> {/* test to open link in new tab */}
-            <h2>Above Content</h2>
-            <p>Content above the centered component.</p>
-          </div>
+          {overFlow !== null ? ( // Render LinkPile only when linkPile is not null
+                <LinkPile links={overFlow} overFlow={false}></LinkPile>
+              ) : (
+                <div>Loading links...</div>
+              )}
+          
         </Col>
       </Row>
       </Container>
-    </div>
+
+      <Settings data={data} forceShow={settingsShow} handle={handle}></Settings>
+    </div> 
   );
+ 
 }
 
 export default App;

@@ -1,4 +1,4 @@
-function Center (){
+function Center (){ // contains search bar
     const handleSearch = (event) => { // handleSearch decides how to open the link
         event.preventDefault(); // prevent form from submitting normally
         const searchText = event.target.q.value; // the text that is submitted
