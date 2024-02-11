@@ -5,8 +5,6 @@ import Col from "react-bootstrap/esm/Col.js";
 import Center from "./Center.js";
 import Link, { LinkPile } from "./Link.js";
 import Settings from "./Settings.js";
-
-
 import {useState, useEffect} from 'react';
 
 function App() {

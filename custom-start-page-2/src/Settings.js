@@ -41,6 +41,7 @@ function Settings(props){ // to be inside the modal for settings
         <Modal.Title> Settings</Modal.Title>
     </Modal.Header>
     <Modal.Body>
+            {/* if you notice it is a ternary, checking if there is data, otherwise show an error */}
             {props.data ? 
             
         <Form>
@@ -57,6 +58,14 @@ function Settings(props){ // to be inside the modal for settings
                     <option value="DuckDuckGo">DuckDuckGo</option> 
                 </>
             }
+            ></ASetting>
+            <ASetting
+            name="greeting"
+            set={setSettings}
+            value={settings}
+            label="Greeting"
+            as="input"
+            type="text"
             ></ASetting>
         </Form>
 
@@ -111,7 +120,7 @@ useEffect(() => {
                 <Form.Label title="Hey!">{props.label}</Form.Label>
             </Col>
             <Col sm="6"> 
-                <Form.Control onChange={onChange} as={props.as} name={props.name} value={settings && settings.Settings && settings.Settings[props.name]}>
+                <Form.Control onChange={onChange} as={props.as} type="props.type" name={props.name} value={settings && settings.Settings && settings.Settings[props.name]}>
                     {props.control}
                 </Form.Control>
             </Col>
