@@ -50,7 +50,8 @@ export function LinkPile(props){
 
     useEffect(() => { // on render, allocate links accordingly
         const screenWidth = window.innerWidth; // idk why this is above the if statement but dont question it it is just constants
-        const numOfLinks = Math.round(((screenWidth / 100)) ** 1.15); // so thta it populates more links the wider the screen is
+        const numOfLinks = Math.round(((screenWidth / 100)) ** 1.15); // so thta it populates more links the wider the screen is 
+        //desmos link: https://www.desmos.com/calculator/mnofgra6su
 
         setLinks(props.links); // set the links beforehand so if the if statement is not true it doesn't be null
         if (props.overFlow){ // if the prop is true

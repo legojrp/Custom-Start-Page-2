@@ -63,6 +63,27 @@ const handle = (action) => {
 
 const [settingsShow, setSettingsShow] = useState(false);
 
+const save = (settings) => {
+  fetch("http://192.168.0.244:3002/backend/save.php", {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify(settings)
+})
+.then(response => {
+  if (!response.ok) {
+    throw new Error('Network response was not ok');
+  }
+  return response.text();
+})
+.then(data => {
+  console.log('Success:', data);
+})
+.catch((error) => {
+  console.error('Error:', error);
+});
+}
 
 
   return (
@@ -99,7 +120,7 @@ const [settingsShow, setSettingsShow] = useState(false);
       </Row>
       </Container>
 
-      <Settings data={data} forceShow={settingsShow} handle={handle}></Settings>
+      <Settings data={data} forceShow={settingsShow} handle={handle} save={save}></Settings>
     </div> 
   );
  
