@@ -6,6 +6,7 @@ import Center from "./Center.js";
 import Link, { LinkPile } from "./Link.js";
 import Settings from "./Settings.js";
 import {useState, useEffect} from 'react';
+import SignIn from "./SignIn.js";
 
 function App() {
 
@@ -13,10 +14,13 @@ function App() {
   const [linkPile, setLinkPile] = useState(null); // link pile array
   const [overFlow, setOverFlow] = useState(null);
   useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get('token');
     const fetchData = async () => {
       try { // try to fetch
         const response = await fetch("http://192.168.0.244:3002/backend/requests.php", { // actually fetching
-          method: 'GET'
+          method: 'POST',
+          body: JSON.stringify({token: token}),
         });
         const result = await response.json(); // json text
         setData(result);
@@ -55,11 +59,21 @@ const handle = (action) => {
   else if (action === "handleSettingHide") {
       setSettingsShow(false);
   }
+  else if (action === "handleSigninShow") {
+    setSigninShow(true);
+  }
+  else if (action === "handleSigninHide") {
+    setSigninShow(false);
+    console.log("Signin Hide");
+  }
+
 
 
 }
 
 const [settingsShow, setSettingsShow] = useState(false);
+
+const [signinShow, setSigninShow] = useState(false);
 
 const save = (settings) => {
   fetch("http://192.168.0.244:3002/backend/save.php", {
@@ -119,6 +133,7 @@ const save = (settings) => {
       </Container>
 
       <Settings data={data} forceShow={settingsShow} handle={handle} save={save}></Settings>
+      <SignIn forceShow={signinShow} handle={handle}></SignIn>
     </div> 
   );
  

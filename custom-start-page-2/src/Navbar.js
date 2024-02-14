@@ -25,6 +25,7 @@ function CustomNav(props) {
           <Nav className="me-auto">
             <Nav.Link href="#home"></Nav.Link>
             <Button onClick={() => props.handle && props.handle("handleSettingShow")}>Settings</Button>
+            <Button onClick={() => props.handle && props.handle("handleSigninShow")}>Sign In!</Button>
           </Nav>
         </Navbar.Collapse>
 
