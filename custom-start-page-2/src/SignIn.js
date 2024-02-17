@@ -6,7 +6,7 @@ import { Form } from 'react-bootstrap';
 
 function SignIn(props) {
     const [show, setShow] = useState(false);
-    const [email, setEmail] = useState('');
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
     const handleClose = () => {
@@ -26,7 +26,7 @@ function SignIn(props) {
 
     const save = () => {
         const formData = new FormData();
-        formData.append('email', email);
+        formData.append('username', username);
         formData.append('password', password);
 
         fetch("http://192.168.0.244:3002/backend/signin.php", {
@@ -37,10 +37,18 @@ function SignIn(props) {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
-            return response.text();
+            return response.json();
         })
         .then(data => {
-            console.log('Success:', data);
+            if (data.status === "success") {
+                window.location.href = `?token=${data.token}`;
+                setTimeout(() => {
+                    window.location.reload();
+                }, 500);
+            }
+            else {
+                alert(data.status);
+            }
         })
         .catch((error) => {
             console.error('Error:', error);
@@ -50,18 +58,21 @@ function SignIn(props) {
     return (
         <Modal show={show} onHide={handleClose}>
             {/* ... */}
+            <Modal.Header closeButton>
+            <Modal.Title> Sign In!</Modal.Title>
+    </Modal.Header>
             <Modal.Body>
                 <Form>
-                    <Form.Group controlId="formBasicEmail">
+                    <Form.Group controlId="formBasicUsername" className='p-1'>
                         {/* ... */}
                         <Form.Control 
-                            type="email" 
-                            placeholder="Enter email" 
-                            value={email} 
-                            onChange={(e) => setEmail(e.target.value)} 
+                            type="username" 
+                            placeholder="Enter Username" 
+                            value={username} 
+                            onChange={(e) => setUsername(e.target.value)} 
                         />
                     </Form.Group>
-                    <Form.Group controlId="formBasicPassword">
+                    <Form.Group controlId="formBasicPassword" className='p-1'>
                         {/* ... */}
                         <Form.Control 
                             type="password" 
@@ -70,15 +81,17 @@ function SignIn(props) {
                             onChange={(e) => setPassword(e.target.value)} 
                         />
                     </Form.Group>
+                </Form>    
+            </Modal.Body>
+            {/* ... */}
+            <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>
                         Close
                     </Button>
                     <Button variant="primary" onClick={save}>
                         Submit
                     </Button>
-                </Form>    
-            </Modal.Body>
-            {/* ... */}
+            </Modal.Footer>
         </Modal>
     )
 } 

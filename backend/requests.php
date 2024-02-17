@@ -4,8 +4,21 @@ header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type, Authorization');
 
 
-$file = file_get_contents("test.json");
-echo $file;
+$request = json_decode(file_get_contents('php://input'));
+if ($request->token){
+    $token = $request->token;
+    $data = json_decode(file_get_contents("signincreds.json"));
+    $file = file_get_contents("test.json");
+    if ($data->token == $token) {
+        echo $file;
+    }
+    else {
+        echo json_encode(['status' => 'fail']);
+    }
+}
+else {
+    echo json_encode(['status' => 'fail']);
+}
 
 
 

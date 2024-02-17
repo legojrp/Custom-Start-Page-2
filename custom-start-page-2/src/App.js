@@ -17,12 +17,14 @@ function App() {
     const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get('token');
     const fetchData = async () => {
+      
       try { // try to fetch
         const response = await fetch("http://192.168.0.244:3002/backend/requests.php", { // actually fetching
           method: 'POST',
           body: JSON.stringify({token: token}),
         });
         const result = await response.json(); // json text
+        alert(result)
         setData(result);
           let links = []; // array to be links
           for (let i = 0; i < result.userData.links.length; i++) {
