@@ -8,6 +8,7 @@ function SignIn(props) {
     const [show, setShow] = useState(false);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState(null);
 
     const handleClose = () => {
         setShow(false);
@@ -28,8 +29,9 @@ function SignIn(props) {
         const formData = new FormData();
         formData.append('username', username);
         formData.append('password', password);
+        setError(null);
 
-        fetch("http://192.168.0.244:3002/backend/signin.php", {
+        fetch("http:/192.168.0.221/Custom-Start-Page-2/backend/backend_dev/signin.php", {
             method: 'POST',
             body: formData
         })
@@ -47,20 +49,54 @@ function SignIn(props) {
                 }, 500);
             }
             else {
-                alert(data.status);
+                throw new Error("Invalid username or password");
             }
         })
         .catch((error) => {
-            console.error('Error:', error);
+            setError(error);
         });
     }
 
+    const saveSignUp = () => {
+        const formData = new FormData();
+        formData.append('username', username);
+        formData.append('password', password);
+        setError(null);
+
+        fetch("http://192.168.0.221/Custom-Start-Page-2/backend/backend_dev/signup.php", {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.status === "success") {
+                window.location.href = `?token=${data.token}`;
+                setTimeout(() => {
+                    window.location.reload();
+                }, 500);
+            }
+            else {
+                throw new Error("Invalid username or password");
+            }
+        })
+        .catch((error) => {
+            setError(error);
+        })
+    }
+
+
+
     return (
-        <Modal show={show} onHide={handleClose}>
+        <Modal show={show} onHide={handleClose} backdrop="static" keyboard={false} >
             {/* ... */}
-            <Modal.Header closeButton>
-            <Modal.Title> Sign In!</Modal.Title>
-    </Modal.Header>
+            <Modal.Header>
+                <Modal.Title> Sign In!</Modal.Title>
+            </Modal.Header>
             <Modal.Body>
                 <Form>
                     <Form.Group controlId="formBasicUsername" className='p-1'>
@@ -82,14 +118,15 @@ function SignIn(props) {
                         />
                     </Form.Group>
                 </Form>    
+                {error && <p>{error.message}</p>}
             </Modal.Body>
             {/* ... */}
             <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
-                        Close
+                    <Button variant="warning" onClick={saveSignUp}>
+                        Sign Up
                     </Button>
                     <Button variant="primary" onClick={save}>
-                        Submit
+                        Sign In
                     </Button>
             </Modal.Footer>
         </Modal>

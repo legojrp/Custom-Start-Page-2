@@ -12,8 +12,10 @@ $username = $_POST['username'];
 $password = $_POST['password'];
 
 $conn = DBConnect::withCredential($CREDENTIALS);
+$passwordhash = hash("sha256", $password . $username);
 
-$results =$conn->select("data", ["id"], "username = '$username' AND password = '$password'");
+
+$results =$conn->select("users", ["id"], "username = '$username' AND password = '$passwordhash'");
 
 if (!empty($results)) {
     $token = hash("sha256", $username . time());

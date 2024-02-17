@@ -19,12 +19,11 @@ function App() {
     const fetchData = async () => {
       
       try { // try to fetch
-        const response = await fetch("http://192.168.0.244:3002/backend/requests.php", { // actually fetching
+        const response = await fetch("http://192..168.0.221/Custom-Start-Page-2/backend/backend_dev/requests.php", { // actually fetching
           method: 'POST',
           body: JSON.stringify({token: token}),
         });
         const result = await response.json(); // json text
-        alert(result)
         setData(result);
           let links = []; // array to be links
           for (let i = 0; i < result.userData.links.length; i++) {
@@ -78,7 +77,7 @@ const [settingsShow, setSettingsShow] = useState(false);
 const [signinShow, setSigninShow] = useState(false);
 
 const save = (settings) => {
-  fetch("http://192.168.0.244:3002/backend/save.php", {
+  fetch("http://192.168.0.221/Custom-Start-Page-2/backend/backend_dev/save.php", {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
