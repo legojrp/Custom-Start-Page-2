@@ -116,8 +116,6 @@ class DBConnect {
         $sql = "INSERT INTO " . $table . " (" . $columns . ") VALUES (" . $values . ")";
 
         $stmt = $this->conn->prepare($sql);
-        $stmt->bindParam(":columns", $columns);
-        $stmt->bindParam(":values", $values);
 
         $stmt->execute();
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
