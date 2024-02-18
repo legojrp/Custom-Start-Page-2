@@ -109,7 +109,7 @@ class DBConnect {
      * @param string $condition The condition to be applied in the WHERE clause
      * @return array The inserted data
      */
-    public function insert($table, $columns, $values, $condition = "") {
+    public function insert($table, $columns, $values) {
 
         $sql = "INSERT INTO :table (:columns) VALUES (:values)";
 
@@ -119,7 +119,6 @@ class DBConnect {
         $values = implode(",", $values);
         $stmt->bindParam(":columns", $columns);
         $stmt->bindParam(":values", $values);
-        $stmt->bindParam(":condition", $condition);
 
         $stmt->execute();
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);

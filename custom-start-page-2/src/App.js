@@ -19,7 +19,7 @@ function App() {
     const fetchData = async () => {
       
       try { // try to fetch
-        const response = await fetch("http://192..168.0.221/Custom-Start-Page-2/backend/backend_dev/requests.php", { // actually fetching
+        const response = await fetch("http://192.168.0.221/Custom-Start-Page-2/backend/backend_dev/requests.php", { // actually fetching
           method: 'POST',
           body: JSON.stringify({token: token}),
         });
