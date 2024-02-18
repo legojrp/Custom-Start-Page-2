@@ -13,7 +13,7 @@ if ($request->token){
     $conn::withCredential($CREDENTIALS);
     $id = $conn->select("tokens", ["id"], "token = '$token'");
     if ($id[0]) {
-        $data = $conn->select("data", ["settings"], "id = '$id[0]'");
+        $data = $conn->select("users", ["settings"], "id = '$id[0]'");
         echo json_encode($data[0]);
     }
     else {

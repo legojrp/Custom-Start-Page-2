@@ -12,7 +12,7 @@ $token = $data->token;
 $id = $conn->select("tokens", ["id"], "token = '$token'");
 
 if (count($id) == 0) {
-    $conn->update("data", ["settings"], ["'$input'"], "id = $id[0]");
+    $conn->update("users", ["settings"], ["'$input'"], "id = $id[0]");
 }
 
 
