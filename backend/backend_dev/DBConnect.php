@@ -86,12 +86,11 @@ class DBConnect {
      */
     public function select($table, $columns, $condition) {
         
-        $sql = "SELECT :columns FROM " . $table . " WHERE " . $condition;
+        $columns = implode(',', $columns);
+        $sql = "SELECT " . $columns . " FROM " . $table . " WHERE " . $condition;
         
         $stmt = $this->conn->prepare($sql);
 
-        $columns = implode(',', $columns);
-        $stmt->bindParam(':columns', $columns);
 
         $stmt->execute();
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
