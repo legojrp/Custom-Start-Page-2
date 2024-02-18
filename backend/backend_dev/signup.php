@@ -18,7 +18,7 @@ $results = $conn->select("users", ["id"], "username = '$username' AND password =
 
 if (!empty($results)) {
     $token = hash("sha256", $username . time());
-    $conn->insert("tokens", ["id", "token"], [$results[0]->id, "'$token'"]);
+    $conn->insert("tokens", ["id", "token,f,f"], [$results[0]->id, "'$token'"]);
     echo json_encode(['token' => $token, 'status' => "success"]);
 }
 else {
