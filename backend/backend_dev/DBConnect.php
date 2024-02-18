@@ -111,10 +111,9 @@ class DBConnect {
      */
     public function insert($table, $columns, $values) {
 
-        $sql = "INSERT INTO :table (:columns) VALUES (:values)";
+        $sql = "INSERT INTO " . $table . " (:columns) VALUES (:values)";
 
         $stmt = $this->conn->prepare($sql);
-        $stmt->bindParam(":table", $table);
         $columns = implode(",", $columns);
         $values = implode(",", $values);
         $stmt->bindParam(":columns", $columns);
