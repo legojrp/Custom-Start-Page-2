@@ -14,7 +14,7 @@ $conn = DBConnect::withCredential($CREDENTIALS);
 
 $conn->insert("users", ["username", "password"], ["'$username'", "'$passwordhash'"]);
 
-$results = $conn->select("users", ["id"], "username = '$username' AND password = '$passwordhash'");
+$results = $conn->select("users", ["id"], "username = $username AND password = $passwordhash");
 
 if (!empty($results)) {
     $token = hash("sha256", $username . time());
