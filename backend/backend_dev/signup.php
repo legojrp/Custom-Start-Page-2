@@ -18,8 +18,8 @@ $conn->insert("users", ["username", "password"], ["'$data->username'", "'$passwo
 if (!empty($results)) {
     $token = hash("sha256", $data->username . time());
     $conn->insert("tokens", ["id", "token"], ["'results[0][id]'", "'$token'"]);
-    echo json_encode(['token' => $token, 'status' => 200]);
+    echo json_encode(['token' => $token, 'status' => "success"]);
 }
 else {
-    echo json_encode(['status' => 400]);
+    echo json_encode(['status' => "fail"]);
 }
