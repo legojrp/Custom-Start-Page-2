@@ -12,8 +12,8 @@ if ($request->token){
     
     $conn = DBConnect::withCredential($CREDENTIALS);
     $id = $conn->select("tokens", ["id"], "token = '$token'");
-    if ($id[0]) {
-        $data = $conn->select("users", ["settings"], "id = '$id[0]'");
+    if (empty($id)) {
+        $data = $conn->select("users", ["settings"], "id = '" . $id[0]["id"] . "'");
         echo json_encode($data[0]);
     }
     else {
