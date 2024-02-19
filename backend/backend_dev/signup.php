@@ -13,7 +13,7 @@ $json = json_encode(file_get_contents("settings.json"));
 
 $conn = DBConnect::withCredential($CREDENTIALS);
 
-$conn->insert("users", ["username", "password", "settings"], ["'$username'", "'$passwordhash'", "'$json'"]);
+$conn->insert("users", ["username", "password", "settings"], ["'$username'", "'$passwordhash'", "$json"]);
 
 $results = $conn->select("users", ["id"], "username = '$username' AND password = '$passwordhash'");
 $results = json_decode(json_encode($results), true);
