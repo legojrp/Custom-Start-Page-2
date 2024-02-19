@@ -85,7 +85,7 @@ const save = (settings) => {
   headers: {
     'Content-Type': 'application/json',
   },
-  body: {token : token, settings : JSON.stringify(settings) } } )
+  body: JSON.stringify({token : token, settings : settings}) })
 .then(response => {
   if (!response.ok) {
     throw new Error('Network response was not ok');
