@@ -23,7 +23,9 @@ function App() {
           method: 'POST',
           body: JSON.stringify({token: token}),
         });
+        
         const result = await response.json(); // json text
+        alert(response.text());
         setData(result);
           let links = []; // array to be links
           for (let i = 0; i < result.userData.links.length; i++) {
