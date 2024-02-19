@@ -16,7 +16,7 @@ if ($request->token){
     if (!empty($id)) {
         $data = $conn->select("users", ["settings"], "id = '" . $id[0]["id"] . "'");
         echo json_decode($data[0]["settings"]);
-        n
+        
     }
     else {
         echo json_encode(['status' => 'fail']);
