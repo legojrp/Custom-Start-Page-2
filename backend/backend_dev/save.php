@@ -4,6 +4,7 @@ header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type, Authorization');
 
 require_once('DBConnect.php');
+require_once("Credentials.php");
 $input = file_get_contents('php://input');
 $data = json_decode($input);
 
@@ -15,6 +16,4 @@ if (count($id) == 0) {
     $conn->update("users", ["settings"], ["'$input'"], "id = $id[0]");
 }
 
-
-$conn = DBConnect::withCredential($CREDENTIALS);
 

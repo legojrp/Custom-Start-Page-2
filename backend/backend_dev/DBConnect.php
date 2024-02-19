@@ -129,10 +129,7 @@ class DBConnect {
      * @return array The result of the update operation
      */
     public function update($table, $columns, $values, $condition) { 
-
-        $sql = "UPDATE :table SET :statements WHERE :condition";
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bindParam(":table", $table);
+        
         $statement = "";
 
         for ($i = 0; $i < (count($columns) > count($values) ? count($values) : count($columns)); $i++) {
@@ -141,9 +138,8 @@ class DBConnect {
                 $statement .= ", ";
             }
         }
-        $stmt->bindParam(":statements", $statement);
-        
-        $stmt->bindParam(":condition", $condition);
+        $sql = "UPDATE $table SET $statement WHERE $condition";
+        $stmt = $this->conn->prepare($sql);
         $stmt->execute();
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $result;
