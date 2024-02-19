@@ -15,7 +15,8 @@ if ($request->token){
     $id = $conn->select("tokens", ["id"], "token = '$token'");
     if (!empty($id)) {
         $data = $conn->select("users", ["settings"], "id = '" . $id[0]["id"] . "'");
-        echo $data[0]["settings"];
+        $json = json_decode($data[0]["settings"]);
+        echo json_encode($json);
         
     }
     else {
