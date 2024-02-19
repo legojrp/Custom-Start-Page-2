@@ -78,13 +78,14 @@ const [settingsShow, setSettingsShow] = useState(false);
 const [signinShow, setSigninShow] = useState(false);
 
 const save = (settings) => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const token = urlParams.get('token');
   fetch("http://192.168.0.221/Custom-Start-Page-2/backend/backend_dev/save.php", {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
   },
-  body: JSON.stringify(settings)
-})
+  body: {token : token, settings : JSON.stringify(settings) } } )
 .then(response => {
   if (!response.ok) {
     throw new Error('Network response was not ok');
