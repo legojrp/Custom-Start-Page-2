@@ -10,7 +10,7 @@ $request = json_decode(file_get_contents('php://input'));
 if ($request->token){
     $token = $request->token;
     
-    $conn::withCredential($CREDENTIALS);
+    $conn = DBConnect::withCredential($CREDENTIALS);
     $id = $conn->select("tokens", ["id"], "token = '$token'");
     if ($id[0]) {
         $data = $conn->select("users", ["settings"], "id = '$id[0]'");

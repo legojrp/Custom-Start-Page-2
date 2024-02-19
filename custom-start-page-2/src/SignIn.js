@@ -75,10 +75,10 @@ function SignIn(props) {
         })
         .then(data => {
             if (data.status === "success") {
-                // window.location.href = `?token=${data.token}`;
-                // setTimeout(() => {
-                //     window.location.reload();
-                // }, 500);
+                window.location.href = `?token=${data.token}`;
+                setTimeout(() => {
+                    window.location.reload();
+                }, 500);
             }
             else {
                 throw new Error("Invalid username or password");
