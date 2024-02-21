@@ -13,3 +13,21 @@ body {
     background-size: cover;
     overflow: hidden;
 }
+
+.right-nav {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.searchBar {
+    width: 75%;
+    height: 50px;
+    padding: 25px;
+    border: 0px none whitesmoke;
+    background-color: whitesmoke;
+    border-radius: 25px;
+}
+
+*:focus {
+    outline: none;
+}

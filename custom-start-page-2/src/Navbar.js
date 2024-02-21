@@ -18,15 +18,12 @@ function CustomNav(props) {
 
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
-      <Container>
+      <Container className=''>
         <Navbar.Brand href="#home">Custom Start Page v2</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="me-auto">
-            <Nav.Link href="#home"></Nav.Link>
+        <Navbar.Collapse className="right-nav" id="basic-navbar-nav">
             <Button onClick={() => props.handle && props.handle("handleSettingShow")} className='m-1'>Settings</Button>
             <Button onClick={() => props.handle && props.handle("handleSigninShow")} className='m-1'>Sign In!</Button>
-          </Nav>
         </Navbar.Collapse>
 
       </Container>

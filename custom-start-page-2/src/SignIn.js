@@ -94,7 +94,7 @@ function SignIn(props) {
     return (
         <Modal show={show} onHide={handleClose} backdrop="static" keyboard={false} >
             {/* ... */}
-            <Modal.Header>
+            <Modal.Header closeButton>
                 <Modal.Title> Sign In!</Modal.Title>
             </Modal.Header>
             <Modal.Body>
