@@ -10,7 +10,7 @@ $data = json_decode($input);
 $conn = DBConnect::withCredential($CREDENTIALS);
 
 $token = $data->token;
-echo $data;
+echo json_encode($data);
 
 
 // $id = $conn->select("tokens", ["id"], "token = '$token'");
