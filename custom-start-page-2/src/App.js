@@ -55,11 +55,10 @@ function App() {
 
 const handle = (action) => {
   if (action === "handleSettingShow") {
-      setSettingsShow(true);
-
+    setSettingsShow(true);
   }
   else if (action === "handleSettingHide") {
-      setSettingsShow(false);
+    setSettingsShow(false);
   }
   else if (action === "handleSigninShow") {
     setSigninShow(true);
@@ -129,7 +128,8 @@ const save = (settings) => {
                 <LinkPile links={overFlow} overFlow={false}></LinkPile>
               ) : (
                 <div>Loading links...</div>
-              )}
+              )
+          }
           
         </Col>
       </Row>
