@@ -9,8 +9,8 @@ $input = file_get_contents('php://input');
 $data = json_decode($input);
 $conn = DBConnect::withCredential($CREDENTIALS);
 
-$token = $data["token"];
-echo $token;
+$token = $data->token;
+echo json_encode($data);
 
 
 // $id = $conn->select("tokens", ["id"], "token = '$token'");
