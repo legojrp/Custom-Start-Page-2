@@ -79,7 +79,7 @@ const [signinShow, setSigninShow] = useState(false);
 const save = (settings) => {
   const urlParams = new URLSearchParams(window.location.search);
   const token = urlParams.get('token');
-  fetch("http://c9ba-63-208-139-149.ngrok-free.app/Custom-Start-Page-2/backend/backend_dev/save.php", {
+  fetch("https://c9ba-63-208-139-149.ngrok-free.app/Custom-Start-Page-2/backend/backend_dev/save.php", {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
