@@ -17,7 +17,7 @@ echo json_encode($token);
 $id = $conn->select("tokens", ["id"], "token = '$token'");
 
 if (!empty($id)) {
-    $conn->update("users", ["settings"], ["'" . json_encode($data->settings) . " '"], "id = {$id[0]}");
+    $conn->update("users", ["settings"], ["'" . json_encode($data->settings) . " '"], "id = ".$id[0]['id']);
 }
 else {
     echo json_encode(['status' => 'fail']);
