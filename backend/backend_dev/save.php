@@ -11,7 +11,7 @@ $data = json_decode($input);
 $conn = DBConnect::withCredential($CREDENTIALS);
 
 $token = $data->token;
-echo json_encode($data->token);
+echo json_encode($token);
 
 
 // $id = $conn->select("tokens", ["id"], "token = '$token'");
