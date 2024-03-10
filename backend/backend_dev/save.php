@@ -14,13 +14,13 @@ $token = $data->token;
 echo json_encode($token);
 
 
-// $id = $conn->select("tokens", ["id"], "token = '$token'");
+$id = $conn->select("tokens", ["id"], "token = '$token'");
 
-// if (!empty($id)) {
-//     $conn->update("users", ["settings"], ["'" . json_encode($data->settings) . " '"], "id = $id[0]");
-// }
-// else {
-//     echo json_encode(['status' => 'fail']);
-// }
+if (!empty($id)) {
+    $conn->update("users", ["settings"], ["'" . json_encode($data->settings) . " '"], "id = $id[0]");
+}
+else {
+    echo json_encode(['status' => 'fail']);
+}
 
 
