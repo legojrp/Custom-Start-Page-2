@@ -7,7 +7,7 @@ header ('Content-Type: application/json');
 require_once('DBConnect.php');
 require_once("Credentials.php");  
 $input = file_get_contents('php://input');
-$data = json_decode($input);
+$data = json_decode($input, true);
 $conn = DBConnect::withCredential($CREDENTIALS);
 
 $token = $data->token;
@@ -17,7 +17,7 @@ echo json_encode($token);
 $id = $conn->select("tokens", ["id"], "token = '$token'");
 
 if (!empty($id)) {
-    $conn->update("users", ["settings"], ["'" . json_encode($data->settings) . " '"], "id = ".$id[0]['id']);
+    $conn->update("users", ["settings"], ["'" . addslashes(json_encode($data->settings)) . " '"], "id = ".$id[0]['id']);
 }
 else {
     echo json_encode(['status' => 'fail']);
