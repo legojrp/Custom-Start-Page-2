@@ -1,5 +1,6 @@
 import { Modal, Button, Form, Row, Col } from "react-bootstrap";
 import { useState, useEffect } from "react"; 
+import { useJSONData } from './JSONDataContext';
 function Settings(props){ // to be inside the modal for settings
     const [show, setShow] = useState(false);
     const handleClose = () => {
@@ -17,16 +18,29 @@ function Settings(props){ // to be inside the modal for settings
         }
     }, [props.forceShow]);
 
-    const [settings, setSettings] = useState(null);
-
-    useEffect(() => {
-        if (props.data) {
-            setSettings(props.data);
-        }
-    });
+    const {jsonData, setJSONData} = useJSONData();
 
     const save = () => {
-        props.save(settings);
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get('token');
+        fetch("https://flying-dog-wildly.ngrok-free.app/Custom-Start-Page-2/backend/backend_dev/save.php", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({token : token, settings : jsonData}) })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.text();
+      })
+      .then(data => {
+        console.log('Success:', data);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
         handleClose();
         setTimeout(() => {
     window.location.reload();
@@ -34,21 +48,34 @@ function Settings(props){ // to be inside the modal for settings
 
     }
 
-    return (
+    const [links, setLinks] = useState(null);
 
+    useEffect(() => {
+        if (!jsonData|| !jsonData.userData||!jsonData.userData.links ) {
+            console.log(jsonData);
+            return;
+        }
+        setLinks(jsonData.userData.links.map((link, index) => {
+            return <ALink name={link.name} url={link.url} key={index}></ALink>;
+        }))
+        console.log(links);
+    }, [jsonData]);
+
+
+    return (
+ 
     <Modal show={show} onHide={handleClose}>
     <Modal.Header closeButton>
         <Modal.Title> Settings</Modal.Title>
     </Modal.Header>
     <Modal.Body>
+    
             {/* if you notice it is a ternary, checking if there is data, otherwise show an error */}
-            {props.data ? 
-            
+            {jsonData ? 
+            <>
         <Form>
             <ASetting
             name="searchEngine"
-            set={setSettings}
-            value={settings}
             label="Search Engine"
             as="select"
             control={
@@ -61,16 +88,18 @@ function Settings(props){ // to be inside the modal for settings
             ></ASetting>
             <ASetting
             name="greeting"
-            set={setSettings}
-            value={settings}
             label="Greeting"
             as="input"
             type="text"
             ></ASetting>
         </Form>
 
-            :<p>Sorry! Something went wrong try again later!</p>} {/* if you notice the colon it is a ternary */}
-            
+        {links}
+
+            </>
+            : <p>Sorry! Something went wrong try again later!</p>} 
+            {/* if you notice the colon it is a ternary */}
+        
     </Modal.Body>
     <Modal.Footer>
         <Button variant="secondary" onClick={handleClose}>
@@ -97,30 +126,27 @@ function ASetting(props){
 // as - type of the setting
 // control - control of the setting
 
-const [settings, setSettings] = useState(null);
+const {jsonData, setJSONData} = useJSONData();
 
 const onChange = (e) => {
     const { name, value } = e.target;
-    if (settings != undefined) {
-        setSettings(prevSettings => {
-            let data = {...prevSettings}; // create a copy of the previous state
+    if (jsonData != undefined) {
+        setJSONData(prevJSON => {
+            let data = {...prevJSON}; // create a copy of the previous state
             data.Settings[name] = value;
             return data; // return the updated state
         });
+        
     }
 }
-useEffect(() => {
-    setSettings(props.value);
-}, [props.value]);
-    
+
     return (
-        console.log(settings && settings.Settings && settings.Settings[props.name]),
         <Form.Group as={Row}>
             <Col sm="6" className="d-flex align-items-center">
                 <Form.Label title="Hey!">{props.label}</Form.Label>
             </Col>
             <Col sm="6"> 
-                <Form.Control onChange={onChange} as={props.as} type="props.type" name={props.name} value={settings && settings.Settings && settings.Settings[props.name]}>
+                <Form.Control onChange={onChange} as={props.as} type="props.type" name={props.name} value={jsonData && jsonData.Settings && jsonData.Settings[props.name]}>
                     {props.control}
                 </Form.Control>
             </Col>
@@ -129,3 +155,48 @@ useEffect(() => {
 }
 
 export { ASetting };
+
+function ALink(props){
+    // props:
+    // name - name of the link
+    // url - url of the linl
+    
+    const [editMode, setEditMode] = useState(false);
+
+    const deleteSelf = () => {
+        props.delete(props.id);
+    }
+    
+       
+    
+    return (
+    <>
+        {/* This is if edit mode isnt on */}
+
+        {editMode ? 
+        <div className="d-flex justify-content-center align-items-center border" >
+            <div className="d-flex flex-column flex-md-row justify-content-center align-items-center">
+                <input type="text" name="name" value={props.name}/>
+                <input type="text" name="url" value={props.url}/>
+            </div>
+                <button onClick={() => setEditMode(false)}>Done</button>
+                <button onClick={() => deleteSelf()}>Delete</button>
+        </div>
+        :
+            <>
+        {/* This is if edit mode is on */}
+        <div className="d-flex justify-content-center align-items-center border" >
+            <div className="d-flex flex-column flex-md-row justify-content-center align-items-center">
+                <p>{props.name}</p>
+                <p>{props.url}</p>
+            </div>
+
+            <button onClick={() => setEditMode(true)}>Edit</button>
+        </div>
+        
+            </>
+}
+    </>
+
+    )
+}

@@ -7,12 +7,14 @@ import Link, { LinkPile } from "./Link.js";
 import Settings from "./Settings.js";
 import {useState, useEffect} from 'react';
 import SignIn from "./SignIn.js";
+import { useJSONData } from './JSONDataContext';
 
 function App() {
 
-  const [data, setData] = useState([]); // data
   const [linkPile, setLinkPile] = useState(null); // link pile array
   const [overFlow, setOverFlow] = useState(null);
+  const {jsonData, setJSONData} = useJSONData();
+
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get('token');
@@ -25,7 +27,7 @@ function App() {
         });
         
         const result = await response.json(); // json text
-        setData(result);
+        setJSONData(result);
           let links = []; // array to be links
           for (let i = 0; i < result.userData.links.length; i++) {
             links.push(<Link name={result.userData.links[i].name} url={result.userData.links[i].url} key={links.length}></Link>); // push links from link.js
@@ -76,28 +78,6 @@ const [settingsShow, setSettingsShow] = useState(false);
 
 const [signinShow, setSigninShow] = useState(false);
 
-const save = (settings) => {
-  const urlParams = new URLSearchParams(window.location.search);
-  const token = urlParams.get('token');
-  fetch("https://flying-dog-wildly.ngrok-free.app/Custom-Start-Page-2/backend/backend_dev/save.php", {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  body: JSON.stringify({token : token, settings : settings}) })
-.then(response => {
-  if (!response.ok) {
-    throw new Error('Network response was not ok');
-  }
-  return response.text();
-})
-.then(data => {
-  console.log('Success:', data);
-})
-.catch((error) => {
-  console.error('Error:', error);
-});
-}
 
 
   return (
@@ -135,7 +115,7 @@ const save = (settings) => {
       </Row>
       </Container>
 
-      <Settings data={data} forceShow={settingsShow} handle={handle} save={save}></Settings>
+      <Settings forceShow={settingsShow} handle={handle}></Settings>
       <SignIn forceShow={signinShow} handle={handle}></SignIn>
     </div> 
   );
