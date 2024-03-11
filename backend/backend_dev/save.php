@@ -7,7 +7,7 @@ header ('Content-Type: application/json');
 require_once('DBConnect.php');
 require_once("Credentials.php");  
 $input = file_get_contents('php://input');
-$data = json_decode($input, true);
+$data = json_decode($input);
 $conn = DBConnect::withCredential($CREDENTIALS);
 
 $token = $data->token;
