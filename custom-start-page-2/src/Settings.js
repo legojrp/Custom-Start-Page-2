@@ -1,11 +1,13 @@
 import { Modal, Button, Form, Row, Col } from "react-bootstrap";
-import { useState, useEffect } from "react"; 
+import { useState, useEffect, useRef } from "react"; 
 import { useJSONData } from './JSONDataContext';
+import ReactDOM from 'react-dom';
 function Settings(props){ // to be inside the modal for settings
     const [show, setShow] = useState(false);
     const handleClose = () => {
         setShow(false);
         props.handle("handleSettingHide");
+        
     }
 
     const handleShow = () => setShow(true);
@@ -19,6 +21,8 @@ function Settings(props){ // to be inside the modal for settings
     }, [props.forceShow]);
 
     const {jsonData, setJSONData} = useJSONData();
+    
+    
 
     const save = () => {
         const urlParams = new URLSearchParams(window.location.search);
@@ -61,6 +65,15 @@ function Settings(props){ // to be inside the modal for settings
         console.log(links);
     }, [jsonData]);
 
+    const newLink = () => {
+        if (jsonData != undefined) {
+            setJSONData(prevJSON => {
+                let data = {...prevJSON}; // create a copy of the previous state
+                data.userData.links.push({name: "", url: ""});
+                return data; // return the updated state
+            });
+        }
+    }    
 
     return (
  
@@ -93,8 +106,9 @@ function Settings(props){ // to be inside the modal for settings
             type="text"
             ></ASetting>
         </Form>
-
+        <Button variant="primary" onClick={newLink} className='m-1'>Add Link</Button>
         {links}
+        
 
             </>
             : <p>Sorry! Something went wrong try again later!</p>} 
@@ -163,6 +177,15 @@ function ALink(props){
     
     const [editMode, setEditMode] = useState(false);
     const {jsonData, setJSONData} = useJSONData();
+    // const containerRef = useRef(null);
+
+    // useEffect(() => {
+    //     return () => {
+    //         if (containerRef.current) {
+    //             ReactDOM.unmountComponentAtNode(containerRef.current);
+    //         }
+    //     };
+    // }, []);
 
     const onChange = (e) => {
         const { name, value } = e.target;
@@ -177,8 +200,18 @@ function ALink(props){
     }
 
     const deleteSelf = () => {
-        props.delete(props.id);
+        if (jsonData != undefined) {
+            setJSONData(prevJSON => {
+                let data = {...prevJSON}; // create a copy of the previous state
+                data.userData.links.splice(props.id, 1);
+                return data; // return the updated state
+            });
+
+            setEditMode(false);            
+        }
     }
+
+
     
        
     
@@ -200,8 +233,10 @@ function ALink(props){
         {/* This is if edit mode is on */}
         <div className="d-flex justify-content-center align-items-center border" >
             <div className="d-flex flex-column flex-md-row justify-content-center align-items-center">
-                <p>{jsonData.userData.links[props.id].name}</p>
-                <p>{jsonData.userData.links[props.id].url}</p>
+                <p>{jsonData.userData.links[props.id] && jsonData.userData.links[props.id].name}</p>
+                <p>&nbsp;-&nbsp;</p>
+
+                <p>{jsonData.userData.links[props.id] && jsonData.userData.links[props.id].url}</p>
             </div>
 
             <button onClick={() => setEditMode(true)}>Edit</button>

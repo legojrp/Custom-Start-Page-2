@@ -18,8 +18,10 @@ const JSONDataContext = createContext();
 export const JSONDataProvider = ({ children }) => {
   const [jsonData, setJSONData] = useState({});
 
+  
+
   return (
-    <JSONDataContext.Provider value={{ jsonData, setJSONData }}>
+    <JSONDataContext.Provider value={{ jsonData, setJSONData}}>
       {children}
     </JSONDataContext.Provider>
   );
