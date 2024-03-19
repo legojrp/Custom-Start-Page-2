@@ -14,8 +14,8 @@ function Search(props){ // contains search bar
     };
 
     return (
-        <form onSubmit={handleSearch}> {/* when submitted, handleSearch decides how to open the link*/}
-            <input type="text" placeholder="Search" id="q" name="q" autoFocus autoComplete="off" style={props.style} onFocus={props.onFocus}/>
+        <form onSubmit={handleSearch} style={{ width: '100%' }}> {/* when submitted, handleSearch decides how to open the link*/}
+            <input type="text" placeholder="" id="q" name="q" autoFocus autoComplete="off" style={props.style} onFocus={props.onFocus}/>
         </form>
     );
     

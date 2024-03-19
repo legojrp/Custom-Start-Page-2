@@ -93,9 +93,9 @@ function Settings(props){ // to be inside the modal for settings
             as="select"
             control={
                 <>
-                    <option value="Bing">Bing</option>
                     <option value="Google">Google</option>
                     <option value="DuckDuckGo">DuckDuckGo</option> 
+                    <option value="Bing">Bing</option>
                 </>
             }
             ></ASetting>

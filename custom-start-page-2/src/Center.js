@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import Search from "./Search";
 import AiSearch from "./AiSearch";
 
@@ -13,53 +13,63 @@ function Center() {
   
     const handleAiSearchFocus = () => {
         setAiSearchFocused(true);
-        setSearchFocused(false);
+        setSearchFocused(false);        
     };
   
-    const handleSwap = () => {
-      setSearchFocused(!searchFocused);
-      setAiSearchFocused(!aiSearchFocused);
+
+    const centerContainerStyle = {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
     };
     
     const searchContainerStyle = {
-        transition: 'transform 0.5s ease',
-        transform: !searchFocused ? 'translateY(150%)' : 'translateY(0)',
-    };
-    
-    const aiSearchContainerStyle = {
-        transition: 'transform 0.5s ease',
-        transform: aiSearchFocused ? 'translateY(-66%)' : 'translateY(0)',
-    };
-
-    const SearchStyle = {
-        transition: 'width 0.5s ease, height 0.5s ease, padding 0.5s ease, margin 0.5s ease',
+        display: 'flex',
+        alignItems: 'center',
+        transition: 'transform 0.5s ease, width 0.5s ease, height 0.5s ease, padding 0.5s ease, margin 0.5s ease',
+        transform: !searchFocused ? 'translateY(200%)' : 'translateY(0)',
         width: searchFocused ? '75%' : '25%',
         height: searchFocused ? '25px' : '15px',
         padding: searchFocused ? '25px' : '15px',
+        paddingLeft: searchFocused ? '20px' : '10px',
         margin: '5px',
         border: '0px none whitesmoke',
         backgroundColor: 'whitesmoke',
         borderRadius: '25px',
-    }
+    };
 
-    const aiSearchStyle = {
-        transition: 'width 0.5s ease, height 0.5s ease, padding 0.5s ease, margin 0.5s ease',
+    const aiSearchContainerStyle = {
+        display: 'flex',
+        alignItems: 'center',
+        transition: 'transform 0.5s ease, width 0.5s ease, height 0.5s ease, padding 0.5s ease, margin 0.5s ease',
+        transform: !searchFocused ? 'translateY(-80%)' : 'translateY(0)',
         width: aiSearchFocused ? '75%' : '25%',
         height: aiSearchFocused ? '25px' : '15px',
         padding: aiSearchFocused ? '25px' : '15px',
+        paddingLeft: aiSearchFocused ? '20px' : '10px',
         margin: '5px',
         border: '0px none whitesmoke',
         backgroundColor: 'whitesmoke',
         borderRadius: '25px',
+    };
+
+    const searchStyle = {
+        transition: 'width 0.5s ease',
+        width: '100%',
+        border: '0px none whitesmoke',
+        backgroundColor: 'whitesmoke',
     }
-    
+        
     return (
-        <div className='text-center'>
+        <div className='text-center' style={centerContainerStyle}>
             <div className="search-container" style={searchContainerStyle}>
-                <Search onFocus={handleSearchFocus} style={SearchStyle}/>
+                <i class="bi bi-search" style={{ paddingRight: '5px'}}></i>
+                <Search onFocus={handleSearchFocus} style={searchStyle}/>
             </div>
             <div className="ai-search-container" style={aiSearchContainerStyle}>
-                <AiSearch onFocus={handleAiSearchFocus} style={aiSearchStyle} />
+                <i class="bi bi-stars" style={{ paddingRight: '5px'}}></i>
+                <AiSearch onFocus={handleAiSearchFocus} style={searchStyle}/>
             </div>
         </div>
     );
