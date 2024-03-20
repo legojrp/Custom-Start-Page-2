@@ -1,11 +1,13 @@
 import { Modal, Button, Form, Row, Col } from "react-bootstrap";
-import { useState, useEffect } from "react"; 
+import { useState, useEffect, useRef } from "react"; 
 import { useJSONData } from './JSONDataContext';
+import ReactDOM from 'react-dom';
 function Settings(props){ // to be inside the modal for settings
     const [show, setShow] = useState(false);
     const handleClose = () => {
         setShow(false);
         props.handle("handleSettingHide");
+        
     }
 
     const handleShow = () => setShow(true);
@@ -19,6 +21,8 @@ function Settings(props){ // to be inside the modal for settings
     }, [props.forceShow]);
 
     const {jsonData, setJSONData} = useJSONData();
+    
+    
 
     const save = () => {
         const urlParams = new URLSearchParams(window.location.search);
@@ -56,11 +60,20 @@ function Settings(props){ // to be inside the modal for settings
             return;
         }
         setLinks(jsonData.userData.links.map((link, index) => {
-            return <ALink name={link.name} url={link.url} key={index}></ALink>;
+            return <ALink name={link.name} url={link.url} key={index} id={index}></ALink>;
         }))
         console.log(links);
     }, [jsonData]);
 
+    const newLink = () => {
+        if (jsonData != undefined) {
+            setJSONData(prevJSON => {
+                let data = {...prevJSON}; // create a copy of the previous state
+                data.userData.links.push({name: "", url: ""});
+                return data; // return the updated state
+            });
+        }
+    }    
 
     return (
  
@@ -80,9 +93,9 @@ function Settings(props){ // to be inside the modal for settings
             as="select"
             control={
                 <>
-                    <option value="Bing">Bing</option>
                     <option value="Google">Google</option>
                     <option value="DuckDuckGo">DuckDuckGo</option> 
+                    <option value="Bing">Bing</option>
                 </>
             }
             ></ASetting>
@@ -93,8 +106,9 @@ function Settings(props){ // to be inside the modal for settings
             type="text"
             ></ASetting>
         </Form>
-
+        <Button variant="primary" onClick={newLink} className='m-1'>Add Link</Button>
         {links}
+        
 
             </>
             : <p>Sorry! Something went wrong try again later!</p>} 
@@ -162,10 +176,42 @@ function ALink(props){
     // url - url of the linl
     
     const [editMode, setEditMode] = useState(false);
+    const {jsonData, setJSONData} = useJSONData();
+    // const containerRef = useRef(null);
+
+    // useEffect(() => {
+    //     return () => {
+    //         if (containerRef.current) {
+    //             ReactDOM.unmountComponentAtNode(containerRef.current);
+    //         }
+    //     };
+    // }, []);
+
+    const onChange = (e) => {
+        const { name, value } = e.target;
+        if (jsonData != undefined) {
+            setJSONData(prevJSON => {
+                let data = {...prevJSON}; // create a copy of the previous state
+                data.userData.links[props.id][name] = value;
+                return data; // return the updated state
+            });
+            
+        }
+    }
 
     const deleteSelf = () => {
-        props.delete(props.id);
+        if (jsonData != undefined) {
+            setJSONData(prevJSON => {
+                let data = {...prevJSON}; // create a copy of the previous state
+                data.userData.links.splice(props.id, 1);
+                return data; // return the updated state
+            });
+
+            setEditMode(false);            
+        }
     }
+
+
     
        
     
@@ -176,8 +222,8 @@ function ALink(props){
         {editMode ? 
         <div className="d-flex justify-content-center align-items-center border" >
             <div className="d-flex flex-column flex-md-row justify-content-center align-items-center">
-                <input type="text" name="name" value={props.name}/>
-                <input type="text" name="url" value={props.url}/>
+                <input type="text" name="name" value={jsonData.userData.links[props.id].name} onChange={onChange}/>
+                <input type="text" name="url" value={jsonData.userData.links[props.id].url} onChange={onChange}/>
             </div>
                 <button onClick={() => setEditMode(false)}>Done</button>
                 <button onClick={() => deleteSelf()}>Delete</button>
@@ -187,8 +233,10 @@ function ALink(props){
         {/* This is if edit mode is on */}
         <div className="d-flex justify-content-center align-items-center border" >
             <div className="d-flex flex-column flex-md-row justify-content-center align-items-center">
-                <p>{props.name}</p>
-                <p>{props.url}</p>
+                <p>{jsonData.userData.links[props.id] && jsonData.userData.links[props.id].name}</p>
+                <p>&nbsp;-&nbsp;</p>
+
+                <p>{jsonData.userData.links[props.id] && jsonData.userData.links[props.id].url}</p>
             </div>
 
             <button onClick={() => setEditMode(true)}>Edit</button>

@@ -19,10 +19,20 @@ body {
     flex-direction: row-reverse;
 }
 
-.searchBar {
+.searchBar-md {
     width: 75%;
     height: 50px;
     padding: 25px;
+    margin: 5px;
+    border: 0px none whitesmoke;
+    background-color: whitesmoke;
+    border-radius: 25px;
+}
+.searchBar-sm {
+    width: 25%;
+    height: 25px;
+    padding: 20px;
+    margin: 5px;
     border: 0px none whitesmoke;
     background-color: whitesmoke;
     border-radius: 25px;
