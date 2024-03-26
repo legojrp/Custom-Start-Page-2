@@ -219,32 +219,36 @@ function ALink(props){
     <>
         {/* This is if edit mode isnt on */}
 
-        {editMode ? 
-        <div className="d-flex justify-content-center align-items-center border" >
-            <div className="d-flex flex-column flex-md-row justify-content-center align-items-center">
-                <input type="text" name="name" value={jsonData.userData.links[props.id].name} onChange={onChange}/>
-                <input type="text" name="url" value={jsonData.userData.links[props.id].url} onChange={onChange}/>
-            </div>
-                <button onClick={() => setEditMode(false)}>Done</button>
-                <button onClick={() => deleteSelf()}>Delete</button>
-        </div>
-        :
-            <>
-        {/* This is if edit mode is on */}
-        <div className="d-flex justify-content-center align-items-center border" >
-            <div className="d-flex flex-column flex-md-row justify-content-center align-items-center">
-                <p>{jsonData.userData.links[props.id] && jsonData.userData.links[props.id].name}</p>
-                <p>&nbsp;-&nbsp;</p>
 
-                <p>{jsonData.userData.links[props.id] && jsonData.userData.links[props.id].url}</p>
-            </div>
+                <div className="d-flex justify-content-center align-items-center border" >
+                    {editMode ? 
+                    <>
+                        <div className="d-flex flex-column flex-md-row justify-content-center align-items-center">
+                            <input type="text" name="name" value={jsonData.userData.links[props.id].name} onChange={onChange}/>
+                            <input type="text" name="url" value={jsonData.userData.links[props.id].url} onChange={onChange}/>
+                        </div>
+                            <button onClick={() => setEditMode(false)}>Done</button>
+                            <button onClick={() => deleteSelf()}>Delete</button>
+                    </>
+                    :
+                    <>
+                    {/* This is if edit mode is on */}
+                        <div className="d-flex flex-column flex-md-row justify-content-center align-items-center">
+                            <p>{jsonData.userData.links[props.id] && jsonData.userData.links[props.id].name}</p>
+                            <p>&nbsp;-&nbsp;</p>
 
-            <button onClick={() => setEditMode(true)}>Edit</button>
-        </div>
+                            <p>{jsonData.userData.links[props.id] && jsonData.userData.links[props.id].url}</p>
+                        </div>
+
+                        <button onClick={() => setEditMode(true)}>Edit</button>
+                    </>
+                    }
+                </div>
         
-            </>
-}
+            
+    
     </>
+    
 
     )
 }
