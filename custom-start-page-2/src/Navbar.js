@@ -17,7 +17,7 @@ function CustomNav(props) {
 
 
   return (
-    <Navbar expand="lg" className="bg-body-tertiary">
+    <Navbar expand="lg" style={{backgroundColor: 'whitesmoke', height: '10vh'}}>
       <Container className=''>
         <Navbar.Brand href="#home">Custom Start Page v2</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />

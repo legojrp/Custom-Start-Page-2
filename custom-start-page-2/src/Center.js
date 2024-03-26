@@ -3,28 +3,28 @@ import Search from "./Search";
 import AiSearch from "./AiSearch";
 
 function Center() {
-    const [searchFocused, setSearchFocused] = useState(true);
+    const [searchFocused, setSearchFocused] = useState(true); // starts with search focused and on top
     const [aiSearchFocused, setAiSearchFocused] = useState(false);
   
-    const handleSearchFocus = () => {
-        setSearchFocused(true);
+    const handleSearchFocus = () => { // when search is focused
+        setSearchFocused(true); 
         setAiSearchFocused(false);
     };
   
-    const handleAiSearchFocus = () => {
+    const handleAiSearchFocus = () => { // when ai search is focused
         setAiSearchFocused(true);
         setSearchFocused(false);        
     };
   
 
-    const centerContainerStyle = {
+    const centerContainerStyle = { // center container
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
     };
     
-    const searchContainerStyle = {
+    const searchContainerStyle = { // search container
         display: 'flex',
         alignItems: 'center',
         transition: 'transform 0.5s ease, width 0.5s ease, height 0.5s ease, padding 0.5s ease, margin 0.5s ease',
@@ -39,7 +39,7 @@ function Center() {
         borderRadius: '25px',
     };
 
-    const aiSearchContainerStyle = {
+    const aiSearchContainerStyle = { // ai search container
         display: 'flex',
         alignItems: 'center',
         transition: 'transform 0.5s ease, width 0.5s ease, height 0.5s ease, padding 0.5s ease, margin 0.5s ease',
@@ -54,7 +54,7 @@ function Center() {
         borderRadius: '25px',
     };
 
-    const searchStyle = {
+    const searchStyle = { // search style
         transition: 'width 0.5s ease',
         width: '100%',
         border: '0px none whitesmoke',
@@ -64,11 +64,11 @@ function Center() {
     return (
         <div className='text-center' style={centerContainerStyle}>
             <div className="search-container" style={searchContainerStyle}>
-                <i class="bi bi-search" style={{ paddingRight: '5px'}}></i>
-                <Search onFocus={handleSearchFocus} style={searchStyle}/>
+                <i class="bi bi-search" style={{ paddingRight: '5px'}}></i> {/* search icon */}
+                <Search onFocus={handleSearchFocus} style={searchStyle}/> 
             </div>
             <div className="ai-search-container" style={aiSearchContainerStyle}>
-                <i class="bi bi-stars" style={{ paddingRight: '5px'}}></i>
+                <i class="bi bi-stars" style={{ paddingRight: '5px'}}></i> {/* sparkle icon */}
                 <AiSearch onFocus={handleAiSearchFocus} style={searchStyle}/>
             </div>
         </div>

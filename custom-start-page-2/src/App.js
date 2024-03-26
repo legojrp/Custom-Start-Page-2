@@ -57,10 +57,7 @@ function App() {
 
 const handle = (action) => {
   if (action === "handleSettingShow") {
-    setSettingsShow(true);
-  }
-  else if (action === "handleSettingHide") {
-    setSettingsShow(false);
+    setSettingsShow(!settingsShow);
   }
   else if (action === "handleSigninShow") {
     setSigninShow(true);
@@ -81,42 +78,43 @@ const [signinShow, setSigninShow] = useState(false);
 
 
   return (
-    <div className="App">
+    <div className="App" >
       <CustomNav handle={handle}></CustomNav>
-      <Container fluid className="d-flex flex-column justify-content-between" style={{ minHeight: '80vh' }}>
-        <Row className="mt-4">
-          <Col>
-          {linkPile !== null ? ( // Render LinkPile only when linkPile is not null
-              <LinkPile links={linkPile} overFlowHandle={overFlowHandle} overFlow={true}></LinkPile>
-            ) : (
-              <div>Loading links...</div>
-            )}
-            </Col>
-        </Row>
-        <Row className="justify-content-center align-items-center" style={{ minHeight: '10vh' }}>
-          <Col xs={12} md={6}>
-            {/* Your centered component goes here */}
-            <div className="text-center">
-              <Center></Center>
-            </div>
-
-          </Col>
-        </Row>
-        <Row className="mt-4">
-        <Col>
-          {overFlow !== null ? ( // Render LinkPile only when linkPile is not null
-                <LinkPile links={overFlow} overFlow={false}></LinkPile>
+      <div style={{ display: 'flex', maxHeight: '90vh'}}>
+        <Container fluid className="d-flex flex-column justify-content-between" style={{ minHeight: '80vh' }}>
+          <Row className="mt-4">
+            <Col>
+            {linkPile !== null ? ( // Render LinkPile only when linkPile is not null
+                <LinkPile links={linkPile} overFlowHandle={overFlowHandle} overFlow={true}></LinkPile>
               ) : (
                 <div>Loading links...</div>
-              )
-          }
-          
-        </Col>
-      </Row>
-      </Container>
+              )}
+              </Col>
+          </Row>
+          <Row className="justify-content-center align-items-center" style={{ minHeight: '10vh' }}>
+            <Col xs={12} md={6}>
+              {/* Your centered component goes here */}
+              <div className="text-center">
+                <Center></Center>
+              </div>
 
-      <Settings forceShow={settingsShow} handle={handle}></Settings>
-      <SignIn forceShow={signinShow} handle={handle}></SignIn>
+            </Col>
+          </Row>
+          <Row className="mt-4">
+            <Col>
+              {overFlow !== null ? ( // Render LinkPile only when linkPile is not null
+                    <LinkPile links={overFlow} overFlow={false}></LinkPile>
+                  ) : (
+                    <div>Loading links...</div>
+                  )
+              }
+              
+            </Col>
+          </Row>
+        </Container>
+        <Settings show={settingsShow} setShow={setSettingsShow} handle={handle}></Settings>
+        <SignIn forceShow={signinShow} handle={handle} ></SignIn>
+      </div>
     </div> 
   );
  

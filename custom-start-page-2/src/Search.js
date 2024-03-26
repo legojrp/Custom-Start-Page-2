@@ -1,4 +1,9 @@
+import React from 'react';
+import { useJSONData } from './JSONDataContext';
+
+
 function Search(props){ // contains search bar
+    const {jsonData, setJSONData} = useJSONData();
     const handleSearch = (event) => { // handleSearch decides how to open the link
         event.preventDefault(); // prevent form from submitting normally
         const searchText = event.target.q.value; // the text that is submitted
@@ -8,7 +13,7 @@ function Search(props){ // contains search bar
         } else if (searchText.includes('.')) { // if the text contains a . assume it has a domain, but no protocol
             window.open(`https://${searchText}`, '_blank'); // open text with added https protocol in a new tab
         } else { // if the text does not contain http or . assume it is a search
-            window.open(`https://www.google.com/search?q=${searchText}`, '_blank'); // does a google search
+            window.open(`https://www.${jsonData.Settings.searchEngine}.com/search?q=${searchText}`, '_blank'); // does a google search
         }
 
     };

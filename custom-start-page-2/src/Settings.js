@@ -1,24 +1,20 @@
-import { Modal, Button, Form, Row, Col } from "react-bootstrap";
+import { Button, Form, Row, Col } from "react-bootstrap";
 import { useState, useEffect, useRef } from "react"; 
 import { useJSONData } from './JSONDataContext';
-import ReactDOM from 'react-dom';
-function Settings(props){ // to be inside the modal for settings
-    const [show, setShow] = useState(false);
-    const handleClose = () => {
-        setShow(false);
-        props.handle("handleSettingHide");
-        
+function Settings({ show, setShow }){ // to be inside the modal for settings
+
+    const settingsContainerStyle = {
+        overflowY: 'scroll',
+        overflowX: 'hidden',
+        transition: 'width 0.5s ease',
+        width: show ? '40vw' : '0px',
+        backgroundColor: 'whitesmoke',
     }
 
-    const handleShow = () => setShow(true);
-    useEffect (() => {
-        if (props.forceShow) {
-            handleShow();
-        }
-        else {
-            handleClose();
-        }
-    }, [props.forceShow]);
+    const settingsStyle = {
+        display: show ? 'block' : 'none',
+        transition: 'display 0.5s allow-discrete', 
+    }
 
     const {jsonData, setJSONData} = useJSONData();
     
@@ -45,7 +41,7 @@ function Settings(props){ // to be inside the modal for settings
       .catch((error) => {
         console.error('Error:', error);
       });
-        handleClose();
+        setShow(false);
         setTimeout(() => {
     window.location.reload();
 }, 500);
@@ -76,56 +72,51 @@ function Settings(props){ // to be inside the modal for settings
     }    
 
     return (
- 
-    <Modal show={show} onHide={handleClose}>
-    <Modal.Header closeButton>
-        <Modal.Title> Settings</Modal.Title>
-    </Modal.Header>
-    <Modal.Body>
-    
-            {/* if you notice it is a ternary, checking if there is data, otherwise show an error */}
-            {jsonData ? 
-            <>
-        <Form>
-            <ASetting
-            name="searchEngine"
-            label="Search Engine"
-            as="select"
-            control={
-                <>
-                    <option value="Google">Google</option>
-                    <option value="DuckDuckGo">DuckDuckGo</option> 
-                    <option value="Bing">Bing</option>
-                </>
-            }
-            ></ASetting>
-            <ASetting
-            name="greeting"
-            label="Greeting"
-            as="input"
-            type="text"
-            ></ASetting>
-        </Form>
-        <Button variant="primary" onClick={newLink} className='m-1'>Add Link</Button>
-        {links}
-        
+        <div style={settingsContainerStyle}>
+            <div style={settingsStyle}>
+                <p>Settings</p>
+                
+            
+                    {/* if you notice it is a ternary, checking if there is data, otherwise show an error */}
+                    {jsonData ? 
+                    <>
+                <Form>
+                    <ASetting
+                    name="searchEngine"
+                    label="Search Engine"
+                    as="select"
+                    control={
+                        <>
+                            <option value="Google">Google</option>
+                            <option value="DuckDuckGo">DuckDuckGo</option> 
+                            <option value="Bing">Bing</option>
+                        </>
+                    }
+                    ></ASetting>
+                    <ASetting
+                    name="greeting"
+                    label="Greeting"
+                    as="input"
+                    type="text"
+                    ></ASetting>
+                </Form>
+                <Button variant="primary" onClick={newLink} className='m-1'>Add Link</Button>
+                {links}
+                
 
-            </>
-            : <p>Sorry! Something went wrong try again later!</p>} 
-            {/* if you notice the colon it is a ternary */}
-        
-    </Modal.Body>
-    <Modal.Footer>
-        <Button variant="secondary" onClick={handleClose}>
-            Close
-        </Button>
-        <Button variant="primary" onClick={save}>
-            Save Changes
-        </Button>
-    </Modal.Footer>
+                    </>
+                    : <p>Sorry! Something went wrong try again later!</p>} 
+                    {/* if you notice the colon it is a ternary */}
+                
+                <Button variant="secondary" onClick={() => setShow(false)}>
+                    Close
+                </Button>
+                <Button variant="primary" onClick={save}>
+                    Save Changes
+                </Button>
+            </div>
 
-</Modal>
-        
+        </div>
     )
 } 
 export default Settings;
@@ -140,19 +131,19 @@ function ASetting(props){
 // as - type of the setting
 // control - control of the setting
 
-const {jsonData, setJSONData} = useJSONData();
+    const {jsonData, setJSONData} = useJSONData();
 
-const onChange = (e) => {
-    const { name, value } = e.target;
-    if (jsonData != undefined) {
-        setJSONData(prevJSON => {
-            let data = {...prevJSON}; // create a copy of the previous state
-            data.Settings[name] = value;
-            return data; // return the updated state
-        });
-        
+    const onChange = (e) => {
+        const { name, value } = e.target;
+        if (jsonData != undefined) {
+            setJSONData(prevJSON => {
+                let data = {...prevJSON}; // create a copy of the previous state
+                data.Settings[name] = value;
+                return data; // return the updated state
+            });
+            
+        }
     }
-}
 
     return (
         <Form.Group as={Row}>
@@ -212,39 +203,45 @@ function ALink(props){
     }
 
 
+    const linkStyle = {
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        width: '100%',
+        padding: '10px',
+        border: '1px solid #ccc',
+    }
     
-       
+    const editLinkStyle = {
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        width: '100%',
+        padding: '10px',
+        border: '1px solid #ccc',
+    }
     
     return (
-    <>
-        {/* This is if edit mode isnt on */}
-
-        {editMode ? 
-        <div className="d-flex justify-content-center align-items-center border" >
-            <div className="d-flex flex-column flex-md-row justify-content-center align-items-center">
-                <input type="text" name="name" value={jsonData.userData.links[props.id].name} onChange={onChange}/>
-                <input type="text" name="url" value={jsonData.userData.links[props.id].url} onChange={onChange}/>
-            </div>
-                <button onClick={() => setEditMode(false)}>Done</button>
-                <button onClick={() => deleteSelf()}>Delete</button>
-        </div>
-        :
-            <>
-        {/* This is if edit mode is on */}
-        <div className="d-flex justify-content-center align-items-center border" >
-            <div className="d-flex flex-column flex-md-row justify-content-center align-items-center">
+        <>
+            {editMode ? 
+                // This is if edit mode is on
+                <div style={editLinkStyle}>
+                    <input type="text" name="name" value={jsonData.userData.links[props.id].name} onChange={onChange}/>
+                    <input type="text" name="url" value={jsonData.userData.links[props.id].url} onChange={onChange}/>
+                    <div>
+                        <button onClick={() => setEditMode(false)}>Done</button>
+                        <button onClick={() => deleteSelf()}>Delete</button>
+                    </div>
+                </div>
+            :
+                // This is if edit mode isnt on
+            <div style={linkStyle}>
                 <p>{jsonData.userData.links[props.id] && jsonData.userData.links[props.id].name}</p>
-                <p>&nbsp;-&nbsp;</p>
-
-                <p>{jsonData.userData.links[props.id] && jsonData.userData.links[props.id].url}</p>
+                <button onClick={() => setEditMode(true)}>Edit</button>
             </div>
-
-            <button onClick={() => setEditMode(true)}>Edit</button>
-        </div>
-        
-            </>
-}
-    </>
+            }
+        </>
 
     )
 }
