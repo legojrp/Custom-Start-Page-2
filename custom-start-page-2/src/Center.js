@@ -22,6 +22,7 @@ function Center() {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
+        padding: '10px',
     };
     
     const searchContainerStyle = { // search container

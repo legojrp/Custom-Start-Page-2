@@ -17,14 +17,13 @@ function CustomNav(props) {
 
 
   return (
-    <Navbar expand="lg" style={{backgroundColor: 'whitesmoke', height: '10vh'}}>
+    <Navbar expand="lg" style={{backgroundColor: 'whitesmoke', height: '10vh', boxShadow: '0px 2px 5px gray'}}>
       <Container className=''>
-        <Navbar.Brand href="#home">Custom Start Page v2</Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse className="right-nav" id="basic-navbar-nav">
+        <Navbar.Brand href="#home">Start Page</Navbar.Brand>
+        <div className="right-nav" id="basic-navbar-nav">
             <Button onClick={() => props.handle && props.handle("handleSettingShow")} className='m-1'>Settings</Button>
             <Button onClick={() => props.handle && props.handle("handleSigninShow")} className='m-1'>Sign In!</Button>
-        </Navbar.Collapse>
+        </div>
 
       </Container>
     </Navbar>

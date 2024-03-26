@@ -3,19 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { useJSONData } from './JSONDataContext';
 function Settings({ show, setShow }){ // to be inside the modal for settings
 
-    const settingsContainerStyle = {
-        overflowY: 'scroll',
-        overflowX: 'hidden',
-        transition: 'width 0.5s ease',
-        width: show ? '40vw' : '0px',
-        backgroundColor: 'whitesmoke',
-    }
-
-    const settingsStyle = {
-        display: show ? 'block' : 'none',
-        transition: 'display 0.5s allow-discrete', 
-    }
-
+    
     const {jsonData, setJSONData} = useJSONData();
     
     
@@ -29,52 +17,68 @@ function Settings({ show, setShow }){ // to be inside the modal for settings
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({token : token, settings : jsonData}) })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.text();
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.text();
       })
       .then(data => {
         console.log('Success:', data);
       })
       .catch((error) => {
         console.error('Error:', error);
-      });
+    });
         setShow(false);
         setTimeout(() => {
-    window.location.reload();
+            window.location.reload();
 }, 500);
 
+}
+
+const [links, setLinks] = useState(null);
+
+useEffect(() => {
+    if (!jsonData|| !jsonData.userData||!jsonData.userData.links ) {
+        console.log(jsonData);
+        return;
     }
+    setLinks(jsonData.userData.links.map((link, index) => {
+        return <ALink name={link.name} url={link.url} key={index} id={index}></ALink>;
+    }))
+    console.log(links);
+}, [jsonData]);
 
-    const [links, setLinks] = useState(null);
+const newLink = () => {
+    if (jsonData != undefined) {
+        setJSONData(prevJSON => {
+            let data = {...prevJSON}; // create a copy of the previous state
+            data.userData.links.push({name: "", url: ""});
+            return data; // return the updated state
+        });
+    }
+}    
 
-    useEffect(() => {
-        if (!jsonData|| !jsonData.userData||!jsonData.userData.links ) {
-            console.log(jsonData);
-            return;
-        }
-        setLinks(jsonData.userData.links.map((link, index) => {
-            return <ALink name={link.name} url={link.url} key={index} id={index}></ALink>;
-        }))
-        console.log(links);
-    }, [jsonData]);
+const settingsContainerStyle = {
+    overflowY: 'scroll',
+    overflowX: 'hidden',
+    transition: 'width 0.5s ease, padding 0.5s ease',
+    width: show ? '50vw' : '0px',
+    height: '90vh',
+    padding: show ? '10px' : '0px',
+    boxShadow: 'inset 2px 0px 5px gray',
+    backgroundColor: 'whitesmoke',
+}
 
-    const newLink = () => {
-        if (jsonData != undefined) {
-            setJSONData(prevJSON => {
-                let data = {...prevJSON}; // create a copy of the previous state
-                data.userData.links.push({name: "", url: ""});
-                return data; // return the updated state
-            });
-        }
-    }    
+const settingsStyle = {
+    display: show ? 'block' : 'none',
+    transition: 'display 0.5s allow-discrete', 
+}
 
-    return (
-        <div style={settingsContainerStyle}>
+return (
+    <div style={settingsContainerStyle}>
             <div style={settingsStyle}>
-                <p>Settings</p>
+                <h2>Settings</h2>
                 
             
                     {/* if you notice it is a ternary, checking if there is data, otherwise show an error */}
@@ -100,6 +104,7 @@ function Settings({ show, setShow }){ // to be inside the modal for settings
                     type="text"
                     ></ASetting>
                 </Form>
+                <h2>Links</h2>
                 <Button variant="primary" onClick={newLink} className='m-1'>Add Link</Button>
                 {links}
                 
@@ -237,7 +242,7 @@ function ALink(props){
             :
                 // This is if edit mode isnt on
                 <div style={linkStyle}>
-                    <p>{jsonData.userData.links[props.id] && jsonData.userData.links[props.id].name}</p>
+                    <p style={{margin: '0px'}}>{jsonData.userData.links[props.id] && jsonData.userData.links[props.id].name}</p>
                     <button onClick={() => setEditMode(true)}>Edit</button>
                 </div>
             }
