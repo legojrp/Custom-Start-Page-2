@@ -236,10 +236,10 @@ function ALink(props){
                 </div>
             :
                 // This is if edit mode isnt on
-            <div style={linkStyle}>
-                <p>{jsonData.userData.links[props.id] && jsonData.userData.links[props.id].name}</p>
-                <button onClick={() => setEditMode(true)}>Edit</button>
-            </div>
+                <div style={linkStyle}>
+                    <p>{jsonData.userData.links[props.id] && jsonData.userData.links[props.id].name}</p>
+                    <button onClick={() => setEditMode(true)}>Edit</button>
+                </div>
             }
         </>
 
