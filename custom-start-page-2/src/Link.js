@@ -51,7 +51,7 @@ export default function Link(props) {
                     className="border d-flex justify-content-center align-items-center rounded-5 px-2 py-2 ml-3 mr-3" // ok some border + rounding stuff here, centered h and v, and some padding and margins to add some space, + also width helps
                     style={{ marginTop: "10px", marginLeft: "20px", width:"auto", marginRight: "10px"}}
                     onClick={() => window.open(props.url, '_blank')}> {/* opens the link in new tab */}
-                            <img className=" px-1 " src={getFaviconUrl(props.url)} alt="" width= "45"/>
+                            <img className=" px-1 " src={props.favicon} alt="" width= "45"/>
                             <div className='px-1 '>{props.name}</div> {/* opens the link in new tab */}
 
 
@@ -60,23 +60,7 @@ export default function Link(props) {
         </div>  
 
     );
-    function getFaviconUrl(url) { // this is the favicon function to get the favicon from url
-        
-        return fetch('https://flying-dog-wildly.ngrok-free.app/Custom-Start-Page-2/backend/backend_dev/Favicon.php', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ url }),
-        })
-          .then(response => response.json())
-          .then(data => data.url)
-          .catch(error => {
-            console.error('Error fetching favicon:', error);
-            return null;
-          });
-          
-        }
+
       
 
 }
