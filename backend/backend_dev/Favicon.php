@@ -10,7 +10,6 @@ if (!isset($data->url)) {
     die(json_encode(['error' => 'URL parameter is required.']));
 }
 
-$url = $_GET['url'];
 // Fetch the HTML content of the specified URL
 $html = file_get_contents($data->url);
 if ($html === false) {
