@@ -1,4 +1,8 @@
 <?php
+header('Access-Control-Allow-Origin: *'); // Replace * with your specific origin if needed
+header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type, Authorization');
+header ('Content-Type: application/json');
 // Check if the 'url' query parameter is provided
 if (!isset($_GET['url'])) {
     http_response_code(400);
