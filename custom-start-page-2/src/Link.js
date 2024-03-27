@@ -62,7 +62,13 @@ export default function Link(props) {
     );
     function getFaviconUrl(url) { // this is the favicon function to get the favicon from url
         
-        return fetch(`https://flying-dog-wildly.ngrok-free.app/Custom-Start-Page-2/backend/backend_dev/Favicon.php?url=${encodeURIComponent(url)}`, { method: 'GET' })
+        return fetch('https://flying-dog-wildly.ngrok-free.app/Custom-Start-Page-2/backend/backend_dev/Favicon.php', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ url }),
+        })
           .then(response => response.json())
           .then(data => data.url)
           .catch(error => {
