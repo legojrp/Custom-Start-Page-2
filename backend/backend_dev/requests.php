@@ -35,24 +35,52 @@ else {
 }
 
 function getFaviconUrl($url) {
-    // Fetch the HTML content of the specified URL
+    // Method 1: Look for the <link> tag with rel="icon" or rel="shortcut icon" in the HTML content
     $html = file_get_contents($url);
     if ($html === false) {
         return 'Error fetching HTML content.';
     }
 
-    // Find the favicon URL in the HTML content
-    if (preg_match('/<link.*?rel=("|\')icon("|\').*?href=("|\')(.*?)("|\')/i', $html, $matches)) {
-        $faviconUrl = $matches[4];
-        
-        // Check if the favicon URL is a relative URL and construct the absolute URL if necessary
+    $faviconUrl = '';
+    $maxResolution = 0;
+
+    if (preg_match_all('/<link.*?rel=("|\')icon("|\').*?href=("|\')(.*?)("|\')/i', $html, $matches)) {
+        foreach ($matches[4] as $url) {
+            $resolution = getFaviconResolution($url);
+            if ($resolution > $maxResolution) {
+                $maxResolution = $resolution;
+                $faviconUrl = $url;
+            }
+        }
         if (!filter_var($faviconUrl, FILTER_VALIDATE_URL)) {
             $urlParts = parse_url($url);
             $faviconUrl = $urlParts['scheme'] . '://' . $urlParts['host'] . $faviconUrl;
         }
-
         return $faviconUrl;
-    } else {
-        return 'Favicon not found.';
     }
+
+    // Method 2: Try fetching the favicon.ico directly
+    $faviconUrl = rtrim($url, '/') . '/favicon.ico';
+    $faviconResolution = getFaviconResolution($faviconUrl);
+    if ($faviconResolution > $maxResolution) {
+        $maxResolution = $faviconResolution;
+    }
+
+    // Method 3: Try Google's favicon API as a fallback
+    $googleFaviconUrl = 'https://www.google.com/s2/favicons?domain=' . urlencode($url);
+    $googleFaviconResolution = getFaviconResolution($googleFaviconUrl);
+    if ($googleFaviconResolution > $maxResolution) {
+        $maxResolution = $googleFaviconResolution;
+        $faviconUrl = $googleFaviconUrl;
+    }
+
+    return $faviconUrl ?: 'Favicon not found.';
+}
+
+function getFaviconResolution($url) {
+    $headers = @get_headers($url, 1);
+    if ($headers && isset($headers['Content-Length'])) {
+        return (int) $headers['Content-Length'];
+    }
+    return 0;
 }
