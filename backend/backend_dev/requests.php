@@ -17,7 +17,7 @@ if ($request->token){
         $data = $conn->select("users", ["settings"], "id = '" . $id[0]["id"] . "'");
         $json = json_decode($data[0]["settings"],true);
 
-        foreach($json["userData"]["links"] as $item){
+        foreach($json["userData"]["links"] as &$item){
             $item["favicon"] = getFaviconUrl($item["url"]);
         }
         
