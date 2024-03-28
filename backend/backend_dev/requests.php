@@ -2,10 +2,10 @@
 header('Access-Control-Allow-Origin: *'); // Replace * with your specific origin if needed
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type, Authorization');
-header ('Content-Type: application/json');
+header('Content-Type: application/json');
 
 require_once 'DBConnect.php';
-require_once "Credentials.php";
+require_once 'Credentials.php';
 
 $request = json_decode(file_get_contents('php://input'));
 if ($request->token){
@@ -15,21 +15,26 @@ if ($request->token){
     $id = $conn->select("tokens", ["id"], "token = '$token'");
     if (!empty($id)) {
         $data = $conn->select("users", ["settings"], "id = '" . $id[0]["id"] . "'");
-        $json = json_decode($data[0]["settings"],true);
+        $json = json_decode($data[0]["settings"], true);
+
+        // Start output buffering
+        ob_start();
 
         echo json_encode($json);
 
-        foreach($json["userData"]["links"] as &$item){
+        // Flush the output buffer to send the JSON response immediately
+        ob_flush();
+        flush();
+
+        // Now process the remaining tasks without waiting for the client to receive the JSON response
+        foreach ($json["userData"]["links"] as &$item){
             if (!isset($item["last_tested"]) || (time() - $item["last_tested"]) > 86400){
                 $item["last_tested"] = time();
                 $item["favicon"] = getFaviconUrl($item["url"]);
             }
-
         }
-        $conn->update("users", ["settings"], ["'" . addslashes(json_encode($json)) . " '"], "id = ".$id[0]['id']);
-        
-        
-        
+
+        $conn->update("users", ["settings"], ["'" . addslashes(json_encode($json)) . " '"], "id = " . $id[0]['id']);
     }
     else {
         echo json_encode(['status' => 'fail']);
