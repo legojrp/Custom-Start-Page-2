@@ -45,13 +45,22 @@ else {
 }
 
 function getFaviconUrl($url) {
-    // Method 1: Look for the <link> tag with rel="icon" or rel="shortcut icon" in the HTML content
+    $faviconUrl = '';
+    $maxResolution = 0; 
     $html = file_get_contents($url);
-    if ($html === false) {
+    // Method 2: Try fetching the favicon.ico directly
+    $faviconUrl = rtrim($url, '/') . '/favicon.ico';
+    $faviconResolution = getFaviconResolution($faviconUrl);
+    if ($faviconResolution > $maxResolution) {
+        $maxResolution = $faviconResolution;
     }
 
-    $faviconUrl = '';
-    $maxResolution = 0;
+
+    // Method 1: Look for the <link> tag with rel="icon" or rel="shortcut icon" in the HTML content
+    
+    
+
+    
     if ($html){
     if (preg_match_all('/<link.*?rel=("|\')icon("|\').*?href=("|\')(.*?)("|\')/i', $html, $matches)) {
         foreach ($matches[4] as $url) {
@@ -70,11 +79,7 @@ function getFaviconUrl($url) {
 }
 
     // Method 2: Try fetching the favicon.ico directly
-    $faviconUrl = rtrim($url, '/') . '/favicon.ico';
-    $faviconResolution = getFaviconResolution($faviconUrl);
-    if ($faviconResolution > $maxResolution) {
-        $maxResolution = $faviconResolution;
-    }
+    
 
     // Method 3: Try Google's favicon API as a fallback
     $googleFaviconUrl = 'https://www.google.com/s2/favicons?domain=' . urlencode($url);
