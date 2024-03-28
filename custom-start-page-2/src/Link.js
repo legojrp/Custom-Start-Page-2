@@ -44,7 +44,10 @@ export default function Link(props) {
 // name - name of the link
 // url - url of the linl
     return (
+        
+
         <div className="d-flex justify-content-center align-items-center">
+            {console.log(props)}
             <Row>
                 <Col 
                     xs={12} 

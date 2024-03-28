@@ -18,7 +18,9 @@ if ($request->token){
         $json = json_decode($data[0]["settings"],true);
 
         foreach($json["userData"]["links"] as &$item){
-            $item["favicon"] = getFaviconUrl($item["url"]);
+            if (isset($item["favicon"])){
+                $item["favicon"] = getFaviconUrl($item["url"]);
+            }
         }
         
         echo json_encode($json);
