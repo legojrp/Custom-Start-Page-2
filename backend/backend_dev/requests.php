@@ -17,13 +17,18 @@ if ($request->token){
         $data = $conn->select("users", ["settings"], "id = '" . $id[0]["id"] . "'");
         $json = json_decode($data[0]["settings"],true);
 
+        echo json_encode($json);
+
         foreach($json["userData"]["links"] as &$item){
-            if (!isset($item["favicon"])){
+            if (!isset($item["last_tested"]) || (time() - $item["last_tested"]) > 86400){
+                $item["last_tested"] = time();
                 $item["favicon"] = getFaviconUrl($item["url"]);
             }
+
         }
+        $conn->update("users", ["settings"], ["'" . addslashes(json_encode($json)) . " '"], "id = ".$id[0]['id']);
         
-        echo json_encode($json);
+        
         
     }
     else {
