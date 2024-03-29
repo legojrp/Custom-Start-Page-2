@@ -30,7 +30,7 @@ function App() {
         setJSONData(result);
           let links = []; // array to be links
           for (let i = 0; i < result.userData.links.length; i++) {
-            links.push(<Link name={result.userData.links[i].name} url={result.userData.links[i].url} key={links.length}></Link>); // push links from link.js
+            links.push(<Link name={result.userData.links[i].name} url={result.userData.links[i].url} favicon={result.userData.links[i].favicon} key={links.length}></Link>); // push links from link.js
           }
           setLinkPile(links);
 
